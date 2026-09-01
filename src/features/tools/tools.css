@@ -1,0 +1,195 @@
+/* ツール panel (src/features/tools). All colors / sizes come from tokens.css. */
+
+.tools {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+/* ---------- Tab panels ---------- */
+.tools__panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+.tools__panel[hidden] {
+  display: none;
+}
+@media (max-width: 639px) {
+  .tools__panel.card--lg {
+    padding: var(--space-4);
+  }
+}
+
+/* PC 2 columns / SP 1 column (DESIGN_SPEC §4, §12) */
+.tools__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-6);
+}
+@media (min-width: 1024px) {
+  .tools__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-8);
+  }
+}
+
+/* ---------- One sub-tool ---------- */
+.tool {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-width: 0;
+}
+@media (max-width: 1023px) {
+  .tool + .tool {
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--color-border);
+  }
+}
+.tool__section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.tool__section + .tool__section {
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border);
+}
+
+.tool__form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.tool__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--space-3);
+  align-items: start;
+}
+.tool__pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+  align-items: start;
+}
+.tool__actions {
+  display: flex;
+  gap: var(--space-2);
+}
+.tool__empty {
+  padding: var(--space-2) 0;
+}
+/* Persistent live region for a sub-tool's result; collapses when there is nothing to show. */
+.tool__result:empty {
+  display: none;
+}
+/* Segmented control stretched to the 44px tap size. */
+.tool__segmented {
+  min-height: var(--size-tap);
+}
+
+/* ---------- Fields ---------- */
+.field__control {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+.field__control > .input {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.tools fieldset {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+.tools legend {
+  padding: 0;
+}
+.md-field__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-1);
+}
+.md-field__sep {
+  color: var(--color-text-muted);
+}
+
+/* ---------- ResultCard (DESIGN_SPEC §9) ---------- */
+.result-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.result-card__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  min-height: var(--size-tap);
+}
+.result-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+.result-card__value {
+  font-size: var(--font-size-h2);
+  line-height: var(--line-height-heading);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+.result-card__list {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  column-gap: var(--space-3);
+  row-gap: var(--space-1);
+  align-items: baseline;
+  margin-top: var(--space-1);
+}
+.result-card__list dt {
+  font-size: var(--font-size-caption);
+  line-height: var(--line-height-caption);
+  color: var(--color-text-muted);
+}
+.result-card__list dd {
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+
+/* ---------- Holiday settings ---------- */
+.range-list {
+  display: flex;
+  flex-direction: column;
+}
+.range-list:not(:empty) {
+  border-top: 1px solid var(--color-border);
+}
+.range-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: var(--size-tap);
+  padding: var(--space-1) 0;
+  border-bottom: 1px solid var(--color-border);
+}
+.range-row__label {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+.range-row__dates {
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+/* Preset chips keep the small look but meet the 44px tap target. */
+.tools__presets .btn--sm {
+  min-height: var(--size-tap);
+}

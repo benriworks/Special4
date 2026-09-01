@@ -1,0 +1,87 @@
+/* Share card preview + actions. Values come from tokens.css only. */
+.share {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.share__frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1200 / 630;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+  overflow: hidden;
+}
+
+.share__preview {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+  animation: share-fade var(--duration-roll) var(--ease-out);
+}
+
+@keyframes share-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.share__status {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: var(--space-4);
+  text-align: center;
+}
+
+.share__status--error {
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+  color: var(--color-error);
+}
+
+.share__actions .btn {
+  flex: 1 1 100%;
+}
+
+/* The save action is an <a download>; keep it looking like a button, not a link. */
+.share__actions a.btn:hover {
+  text-decoration: none;
+}
+
+@media (min-width: 640px) {
+  .share__actions .btn {
+    flex: 0 0 auto;
+  }
+}
+
+.share__text {
+  margin: 0;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-family: var(--font-family);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  user-select: text;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .share__preview {
+    animation: none;
+  }
+}
