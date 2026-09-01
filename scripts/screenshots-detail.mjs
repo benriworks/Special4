@@ -37,7 +37,15 @@ try {
       // save the generated card itself
       const src = await sheet.getByTestId('share-preview').getAttribute('src').catch(() => null)
       if (src) {
-        const data = await page.evaluate(async (u) => { const b = await (await fetch(u)).blob(); return await new Promise(r => { const fr = new FileReader(); fr.onload = () => r(fr.result); fr.readAsDataURL(b) }) }, src)
+        // connect-src 'self' blocks fetch(blob:), so re-encode the rendered <img> through a canvas instead
+        const data = await page.evaluate(() => {
+          const img = document.querySelector('[data-testid="share-preview"]')
+          const c = document.createElement('canvas')
+          c.width = img.naturalWidth
+          c.height = img.naturalHeight
+          c.getContext('2d').drawImage(img, 0, 0)
+          return c.toDataURL('image/png')
+        })
         const { writeFileSync } = await import('node:fs')
         writeFileSync(`${out}/card-${vp}-${scheme}.png`, Buffer.from(String(data).split(',')[1], 'base64'))
       }

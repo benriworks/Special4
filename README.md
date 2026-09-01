@@ -43,8 +43,8 @@
 | 領域 | 採用 |
 |---|---|
 | UI | React 19 / TypeScript 7 / Vite 8 |
-| ロジック | 純関数ライブラリ（`src/core/`）。依存ゼロ、Vitest で128テスト |
-| E2E | Playwright（`tests/`）— 実際の `/Special4/` サブパスで起動して検証 |
+| ロジック | 純関数ライブラリ（`src/core/`）。依存ゼロ、Vitest で134テスト |
+| E2E | Playwright（`tests/`、28件）— 実際の `/Special4/` サブパスで起動して検証 |
 | PWA | vite-plugin-pwa（precache・更新トースト） |
 | フォント | Zen Kaku Gothic New（SIL OFL）を使用文字だけにサブセット化して自前配信（フォント約190KB、アプリ全体で約600KB） |
 | 状態 | URL ハッシュ（`#y=2026&pto=3&mode=longest&wk=sat-sun&off=…`）と localStorage の双方向同期 |
