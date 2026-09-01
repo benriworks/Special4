@@ -1,0 +1,118 @@
+/* Design tokens — single source of truth (docs/DESIGN_SPEC.md §14). Do not hard-code colors/sizes elsewhere. */
+:root {
+  color-scheme: light;
+  /* color */
+  --color-primary: #1B1F2A;
+  --color-primary-hover: #2A3040;
+  --color-primary-active: #0F131B;
+  --color-on-primary: #FFFFFF;
+  --color-secondary: #3558A2;
+  --color-holiday: #C8102E;
+  --color-holiday-ribbon: #C8102E;
+  --color-on-holiday: #FFFFFF;
+  --color-pto: #F2B01E;
+  --color-pto-text: #9A6700;
+  --color-on-pto: #1B1F2A;
+  --color-pto-border: rgba(27, 31, 42, 0.4);
+  --color-bg: #FBFBF9;
+  --color-surface: #FFFFFF;
+  --color-text: #1B1F2A;
+  --color-text-muted: #5C6370;
+  --color-border: rgba(27, 31, 42, 0.14);
+  --color-border-strong: rgba(27, 31, 42, 0.4);
+  --color-hover: rgba(27, 31, 42, 0.06);
+  --color-active: rgba(27, 31, 42, 0.10);
+  --color-error: #B3261E;
+  --color-success: #1E7B4F;
+  --color-warning: #8A5A00;
+  --color-focus: #3558A2;
+  /* typography */
+  --font-family: "Zen Kaku Gothic New", "Hiragino Sans", "Yu Gothic UI", "Noto Sans JP", system-ui, sans-serif;
+  --font-size-display: 56px;
+  --font-size-h1: 22px;
+  --font-size-h2: 20px;
+  --font-size-h3: 16px;
+  --font-size-body: 16px;
+  --font-size-caption: 13px;
+  --font-size-button: 15px;
+  --font-size-day: 13px;
+  --font-size-ribbon: 12px;
+  --line-height-display: 1.1;
+  --line-height-heading: 1.4;
+  --line-height-body: 1.8;
+  --line-height-caption: 1.6;
+  /* spacing / radius / shadow */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-section: 64px;
+  --radius-card: 12px;
+  --radius-sheet: 16px;
+  --radius-control: 8px;
+  --radius-ribbon: 4px;
+  --radius-pto: 6px;
+  --radius-badge: 4px;
+  --shadow-sheet: 0 12px 32px rgba(27, 31, 42, 0.18);
+  /* sizes */
+  --size-tap: 44px;
+  --size-header: 64px;
+  --size-ribbon: 18px;
+  --size-slider-thumb: 28px;
+  --container-max: 1200px;
+  --container-pad: 32px;
+  /* motion */
+  --duration-roll: 300ms;
+  --duration-ribbon: 240ms;
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --color-primary: #ECEEF2;
+  --color-primary-hover: #FFFFFF;
+  --color-primary-active: #D5D9E0;
+  --color-on-primary: #101826;
+  --color-secondary: #8FB3F0;
+  --color-holiday: #FF6B7A;
+  --color-holiday-ribbon: #D42A45;
+  --color-on-holiday: #FFFFFF;
+  --color-pto: #F2B01E;
+  --color-pto-text: #F2B01E;
+  --color-on-pto: #1B1F2A;
+  --color-pto-border: rgba(236, 238, 242, 0.5);
+  --color-bg: #101826;
+  --color-surface: #172033;
+  --color-text: #ECEEF2;
+  --color-text-muted: #A3ACBA;
+  --color-border: rgba(236, 238, 242, 0.14);
+  --color-border-strong: rgba(236, 238, 242, 0.4);
+  --color-hover: rgba(236, 238, 242, 0.08);
+  --color-active: rgba(236, 238, 242, 0.14);
+  --color-error: #FF8A80;
+  --color-success: #6CCB94;
+  --color-warning: #F2B01E;
+  --color-focus: #8FB3F0;
+  --shadow-sheet: 0 12px 32px rgba(0, 0, 0, 0.5);
+}
+
+@media (max-width: 639px) {
+  :root {
+    --font-size-display: 40px;
+    --font-size-day: 14px;
+    --space-section: 40px;
+    --container-pad: 16px;
+    --size-ribbon: 24px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-roll: 0ms;
+    --duration-ribbon: 0ms;
+  }
+}
