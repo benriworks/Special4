@@ -115,13 +115,13 @@ describe('fitText', () => {
 
 describe('ptoLine / ptoLineShort / streakTitle', () => {
   it('lists PTO days with or without weekdays', () => {
-    expect(ptoLine(['2026-09-24', '2026-09-25'], true)).toBe('有休 9/24(木)・9/25(金) の2日で')
-    expect(ptoLine(['2026-09-24', '2026-09-25'], false)).toBe('有休 9/24・9/25 の2日で')
-    expect(ptoLine([], true)).toBe('有休なしで')
+    expect(ptoLine(['2026-09-24', '2026-09-25'], true)).toBe('有休 9/24(木)・9/25(金)（2日）')
+    expect(ptoLine(['2026-09-24', '2026-09-25'], false)).toBe('有休 9/24・9/25（2日）')
+    expect(ptoLine([], true)).toBe('有休なし')
   })
   it('has a compact form', () => {
-    expect(ptoLineShort(0)).toBe('有休なしで')
-    expect(ptoLineShort(3)).toBe('有休 3日で')
+    expect(ptoLineShort(0)).toBe('有休なし')
+    expect(ptoLineShort(3)).toBe('有休 3日')
   })
   it('builds the streak title', () => {
     expect(streakTitle({ length: 9, name: 'シルバーウィーク' })).toBe('9連休（シルバーウィーク）')

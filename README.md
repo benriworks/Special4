@@ -28,7 +28,7 @@
 2. このブランチを `main` にマージする（または Actions タブから「Deploy to GitHub Pages」を手動実行する）。
 3. 数十秒後に https://benriworks.github.io/Special4/ で公開されます。
 
-ワークフローは [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml)。`npm ci && npm run build` の成果物 `dist/` を `actions/deploy-pages` で配信します。Vite の `base` は `/Special4/` に固定してあります（リポジトリ名を変えたら `vite.config.ts` の `BASE` も変更してください）。
+ワークフローは [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml)。`npm ci && npm run build` の成果物 `dist/` を `actions/deploy-pages` で配信します。Vite の `base` は `/Special4/` に固定してあります（リポジトリ名を変えたら `vite.config.ts` の `BASE` と、`index.html` の `og:url` / `og:image` も変更してください）。
 
 ## 正確さについて
 
@@ -46,7 +46,7 @@
 | ロジック | 純関数ライブラリ（`src/core/`）。依存ゼロ、Vitest で128テスト |
 | E2E | Playwright（`tests/`）— 実際の `/Special4/` サブパスで起動して検証 |
 | PWA | vite-plugin-pwa（precache・更新トースト） |
-| フォント | Zen Kaku Gothic New（SIL OFL）を使用文字だけにサブセット化して自前配信。配信サイズは約 500KB |
+| フォント | Zen Kaku Gothic New（SIL OFL）を使用文字だけにサブセット化して自前配信（フォント約190KB、アプリ全体で約600KB） |
 | 状態 | URL ハッシュ（`#y=2026&pto=3&mode=longest&wk=sat-sun&off=…`）と localStorage の双方向同期 |
 | デザイン | [`docs/DESIGN_SPEC.md`](docs/DESIGN_SPEC.md) の14観点で確定したトークンのみを使用（`src/styles/tokens.css`） |
 
@@ -70,6 +70,7 @@ scripts/           フォントサブセット化・アイコン生成・スク�
 npm ci
 npm run dev            # http://localhost:5173/Special4/
 npm run test:unit      # Vitest
+npx playwright install chromium   # 初回のみ（E2E・アイコン生成・スクリーンショット用）
 npm test               # ビルド + Playwright E2E
 npm run build && npm run preview
 npm run fonts:subset   # UI文字列を変えたら再実行（要 python3 + pip install fonttools brotli）

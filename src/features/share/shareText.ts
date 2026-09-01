@@ -26,7 +26,7 @@ export function shareLines(input: ShareTextInput): [headline: string, pto: strin
 /**
  * Plain text for chat apps (≤ 3 lines), e.g.
  * 【2026年】9/19(土)〜9/27(日) 9連休（シルバーウィーク）
- * 有休 9/24(木)・9/25(金) の2日で
+ * 有休 9/24(木)・9/25(金)（2日）
  * 日付のミカタ https://…
  */
 export function shareText(input: ShareTextInput): string {

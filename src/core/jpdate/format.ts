@@ -21,6 +21,13 @@ export function formatShort(iso: ISODate, withWeekday = true): string {
   return `${m}/${d}${withWeekday ? `(${weekdayJa(iso)})` : ''}`
 }
 
+/** 9/18・9/24・9/25 — at most `max` dates, then 「ほか◯日」 */
+export function listDatesShort(days: readonly ISODate[], max = 4): string {
+  const shown = days.length > max + 1 ? days.slice(0, max) : days
+  const rest = days.length - shown.length
+  return shown.map((d) => formatShort(d, false)).join('・') + (rest > 0 ? ` ほか${rest}日` : '')
+}
+
 /** 9/19(土)〜9/23(水) */
 export function formatRangeShort(a: ISODate, b: ISODate): string {
   return `${formatShort(a)}〜${formatShort(b)}`

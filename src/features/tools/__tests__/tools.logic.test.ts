@@ -128,7 +128,7 @@ describe('wareki helpers', () => {
     expect(warekiErrorMessage('year', '令和')).toBe('令和は1年から81年まで入力できます。')
     expect(warekiErrorMessage('year', '昭和')).toBe('昭和は1年から64年まで入力できます。')
     expect(warekiErrorMessage('year', '平成')).toBe('平成は1年から31年まで入力できます。')
-    expect(warekiErrorMessage('date', '令和')).toBe('その月にその日は存在しません。')
+    expect(warekiErrorMessage('date', '令和')).toBe('その月にその日はありません。')
     expect(warekiErrorMessage('range', '昭和')).toBe('昭和にその日付はありません。')
     expect(warekiErrorMessage('era', '慶応')).toBe('元号を選んでください。')
   })
@@ -138,7 +138,7 @@ describe('wareki helpers', () => {
     expect(warekiErrorMessage('range', '昭和', { year: 64, month: 1, day: 8 })).toBe('昭和は64年1月7日（1989年1月7日）までです。')
     expect(warekiErrorMessage('range', '明治', { year: 45, month: 8, day: 1 })).toBe('明治は45年7月29日（1912年7月29日）までです。')
     expect(warekiErrorMessage('range', '明治', { year: 5, month: 12, day: 31 })).toBe(MSG_WAREKI_MEIJI)
-    expect(MSG_WAREKI_MEIJI).toBe('明治は6年（1873年）以降の日付のみ変換できます。')
+    expect(MSG_WAREKI_MEIJI).toBe('明治は6年（1873年1月1日）から入力できます。')
     // unknown era / nonsense input falls back to the generic message
     expect(warekiErrorMessage('range', '慶応', { year: 1, month: 1, day: 1 })).toBe('慶応にその日付はありません。')
     expect(warekiErrorMessage('range', '令和', { year: 0, month: 13, day: 40 })).toBe('令和にその日付はありません。')

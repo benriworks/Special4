@@ -78,6 +78,21 @@ describe('suggestPto — more3', () => {
   })
 })
 
+describe('suggestPto — more3 with no weekly days off', () => {
+  const none = buildDayOffMap(2026, { weekend: 'none', customRanges: [] }, REF)
+  it('places pairs around isolated holidays so streaks actually appear', () => {
+    const p2 = suggestPto(none, 2, 'more3')
+    expect(p2.ptoDays).toHaveLength(2)
+    expect(p2.summary.streak3plus).toBe(p2.baseline.streak3plus + 1)
+    const p4 = suggestPto(none, 4, 'more3')
+    expect(p4.summary.streak3plus).toBe(p4.baseline.streak3plus + 2)
+  })
+  it('n=1 still uses the day sensibly (extends the existing GW run)', () => {
+    const p1 = suggestPto(none, 1, 'more3')
+    expect(p1.ptoDays).toHaveLength(1)
+  })
+})
+
 describe('performance', () => {
   it('n=10 both modes under 100ms', () => {
     const t0 = performance.now()

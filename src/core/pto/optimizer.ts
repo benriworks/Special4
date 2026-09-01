@@ -112,14 +112,19 @@ function score3(map: DayOffMap, flags: Uint8Array): [number, number] {
 }
 
 /**
- * Greedy: repeatedly place one PTO day on the in-year workday adjacent to an
- * existing non-working day that yields the best (streak count, streak days).
- * Mutates `flags`; returns the chosen indices.
+ * Greedy: repeatedly place PTO on the in-year workday adjacent to an existing
+ * non-working day that yields the best (streak count, streak days). When no
+ * single day can create a new streak (e.g. weekend rule 'none', where an
+ * isolated holiday needs two PTO days), it looks one step further and places a
+ * pair. Mutates `flags`; returns the chosen indices.
  */
 function greedyMore3(map: DayOffMap, flags: Uint8Array, budget: number, p: Placeable): number[] {
   const chosen: number[] = []
   const len = flags.length
-  for (let r = 0; r < budget; r++) {
+  const better = (a: [number, number], b: [number, number]) => a[0] > b[0] || (a[0] === b[0] && a[1] > b[1])
+  let remaining = budget
+  while (remaining > 0) {
+    const current = score3(map, flags)
     let bestIdx = -1
     let bestScore: [number, number] = [-1, -1]
     for (let i = 0; i < len; i++) {
@@ -129,14 +134,47 @@ function greedyMore3(map: DayOffMap, flags: Uint8Array, budget: number, p: Place
       flags[i] = 8
       const s = score3(map, flags)
       flags[i] = 0
-      if (s[0] > bestScore[0] || (s[0] === bestScore[0] && s[1] > bestScore[1])) {
+      if (better(s, bestScore)) {
         bestScore = s
         bestIdx = i
       }
     }
     if (bestIdx < 0) break
+
+    if (bestScore[0] <= current[0] && remaining >= 2) {
+      // No single day creates a streak: try pairs (i, i+1) and (i, i+2 with an off day between).
+      let pair: [number, number] | null = null
+      let pairScore: [number, number] = bestScore
+      for (let i = 0; i < len; i++) {
+        if (!placeable(p, flags, i)) continue
+        for (const j of [i + 1, i + 2]) {
+          if (j >= len || !placeable(p, flags, j)) continue
+          if (j === i + 2 && flags[i + 1] === 0) continue
+          const touchesOff = (i > 0 && flags[i - 1] !== 0) || (j + 1 < len && flags[j + 1] !== 0) || j === i + 2
+          if (!touchesOff) continue
+          flags[i] = 8
+          flags[j] = 8
+          const s = score3(map, flags)
+          flags[i] = 0
+          flags[j] = 0
+          if (s[0] > pairScore[0] || (s[0] === pairScore[0] && s[1] > pairScore[1] && s[0] > current[0])) {
+            pairScore = s
+            pair = [i, j]
+          }
+        }
+      }
+      if (pair && pairScore[0] > current[0]) {
+        flags[pair[0]] = 8
+        flags[pair[1]] = 8
+        chosen.push(pair[0], pair[1])
+        remaining -= 2
+        continue
+      }
+    }
+
     flags[bestIdx] = 8
     chosen.push(bestIdx)
+    remaining--
   }
   return chosen
 }

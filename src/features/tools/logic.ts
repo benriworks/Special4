@@ -137,7 +137,7 @@ export function validateRangeForm(input: RangeFormInput): RangeFormResult {
 
 export const MSG_WAREKI_MIN = '明治6年（1873年）1月1日以降の日付のみ変換できます。'
 /** 和暦→西暦 with an era year that falls before the Gregorian adoption (DESIGN_SPEC §10 example). */
-export const MSG_WAREKI_MEIJI = '明治は6年（1873年）以降の日付のみ変換できます。'
+export const MSG_WAREKI_MEIJI = '明治は6年（1873年1月1日）から入力できます。'
 export const MSG_WAREKI_MAX = `${parseISO(WAREKI_MAX).y}年12月31日までの日付のみ変換できます。`
 
 /** Error for the 西暦→和暦 date input, or null when convertible. */
@@ -161,10 +161,11 @@ export function warekiErrorMessage(code: WarekiError, eraName: string, date?: { 
     case 'year': {
       const era = ERAS.find((e) => e.name === eraName)
       const max = era ? maxEraYear(era) : 1
-      return `${eraName}は1年から${max}年まで入力できます。`
+      const min = era?.name === '明治' ? 6 : 1
+      return `${eraName}は${min}年から${max}年まで入力できます。`
     }
     case 'date':
-      return 'その月にその日は存在しません。'
+      return date ? `${date.month}月に${date.day}日はありません。` : 'その月にその日はありません。'
     case 'range': {
       const era = ERAS.find((e) => e.name === eraName)
       if (era && date && Number.isInteger(date.year) && date.year >= 1 && monthDayExists(date.month, date.day)) {

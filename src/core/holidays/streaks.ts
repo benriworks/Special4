@@ -13,7 +13,7 @@ export function nameStreak(map: DayOffMap, from: number, to: number): string | u
     const d = dateAt(map, i)
     const md = monthDay(d)
     if (md === '01-01') newYear = true
-    if (md >= '05-03' && md <= '05-05') gw = true
+    if (md >= '04-29' && md <= '05-05') gw = true
     if (md >= '08-13' && md <= '08-15') obon = true
     if (map.flags[i] & FLAG_HOLIDAY) {
       if (md >= '09-15' && md <= '09-21' && weekday(d) === 1) keiro = true

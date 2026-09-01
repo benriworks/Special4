@@ -93,21 +93,21 @@ export function labelSegmentKeys(year: number, streaks: Streak[], map: DayOffMap
   return new Map([...best].map(([s, v]) => [s, v.key]))
 }
 
-/** Longest run of same-kind slots inside a segment (prefers non-PTO). Returns [startIndex, length]. */
-export function labelRun(days: { pto: boolean }[]): [number, number] {
-  let best: [number, number] = [0, 0]
-  let bestPto: [number, number] = [0, 0]
+/** Longest runs of same-kind slots inside a segment: `main` = non-PTO (red), `pto` = PTO (yellow). Each is [startIndex, length]. */
+export function labelRuns(days: { pto: boolean }[]): { main: [number, number]; pto: [number, number] } {
+  let main: [number, number] = [0, 0]
+  let pto: [number, number] = [0, 0]
   let i = 0
   while (i < days.length) {
     let j = i
     while (j + 1 < days.length && days[j + 1].pto === days[i].pto) j++
     const len = j - i + 1
     if (days[i].pto) {
-      if (len > bestPto[1]) bestPto = [i, len]
-    } else if (len > best[1]) best = [i, len]
+      if (len > pto[1]) pto = [i, len]
+    } else if (len > main[1]) main = [i, len]
     i = j + 1
   }
-  return best[1] > 0 ? best : bestPto
+  return { main, pto }
 }
 
 /** Pick the longest label that fits in `px` pixels (≈12px per character + padding). */

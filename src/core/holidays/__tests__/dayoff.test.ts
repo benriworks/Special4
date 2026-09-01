@@ -45,6 +45,10 @@ describe('day-off map 2026', () => {
     const sw = findStreaks(m).find((x) => x.start === '2026-09-19')
     expect(sw).toMatchObject({ end: '2026-09-27', length: 9, boosted: true, ptoDays: ['2026-09-24', '2026-09-25'] })
   })
+  it('a 4/29–5/1 streak is named GW too (2022)', () => {
+    const m = buildDayOffMap(2022, SATSUN, REF)
+    expect(findStreaks(m).find((x) => x.start === '2022-04-29')).toMatchObject({ end: '2022-05-01', length: 3, name: 'GW' })
+  })
   it('sun-only weekend rule', () => {
     const m = buildDayOffMap(2026, { weekend: 'sun', customRanges: [] }, REF)
     expect(flagsAt(m, '2026-09-19')).toBe(0)

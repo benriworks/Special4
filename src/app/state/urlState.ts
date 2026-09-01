@@ -9,26 +9,41 @@ import { YEAR_MAX, YEAR_MIN, type AppState } from './types'
 const WEEKENDS: WeekendRule[] = ['sat-sun', 'sun', 'none']
 const MODES: PtoMode[] = ['longest', 'more3']
 
-function isValidMD(md: string): boolean {
+export const CUSTOM_LABEL_MAX = 12
+
+export function isValidMD(md: string): boolean {
   const m = Number(md.slice(0, 2))
   const d = Number(md.slice(3, 5))
   return /^\d{2}-\d{2}$/.test(md) && m >= 1 && m <= 12 && d >= 1 && d <= daysInMonth(2024, m)
 }
 
+/** Trim, strip control characters and cap a user label to CUSTOM_LABEL_MAX code points. */
+export function sanitizeLabel(label: unknown, fallback = '休業日'): string {
+  if (typeof label !== 'string') return fallback
+  const clean = [...label.replace(/[\u0000-\u001f\u007f]/g, '').trim()].slice(0, CUSTOM_LABEL_MAX).join('')
+  return clean || fallback
+}
+
 export function encodeRanges(ranges: CustomRange[]): string {
-  return ranges.map((r) => `${r.from.replace('-', '')}-${r.to.replace('-', '')}:${r.label}`).join(',')
+  return ranges.map((r) => `${r.from.replace('-', '')}-${r.to.replace('-', '')}:${encodeURIComponent(r.label)}`).join(',')
 }
 
 export function decodeRanges(s: string): CustomRange[] {
   const out: CustomRange[] = []
   for (const part of s.split(',')) {
     if (!part) continue
-    const m = /^(\d{4})-(\d{4})(?::(.{1,12}))?$/.exec(part)
+    const m = /^(\d{4})-(\d{4})(?::(.*))?$/su.exec(part)
     if (!m) continue
     const from = `${m[1].slice(0, 2)}-${m[1].slice(2)}`
     const to = `${m[2].slice(0, 2)}-${m[2].slice(2)}`
     if (!isValidMD(from) || !isValidMD(to)) continue
-    out.push({ from, to, label: m[3] ?? '休業日' })
+    let raw = m[3] ?? ''
+    try {
+      raw = decodeURIComponent(raw)
+    } catch {
+      /* keep as is */
+    }
+    out.push({ from, to, label: sanitizeLabel(raw) })
   }
   return out
 }

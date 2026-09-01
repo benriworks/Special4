@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { buildDayOffMap, findStreaks, withPto } from '../../../core/holidays'
-import { fitLabel, labelRun, labelSegmentKeys, monthDays, monthSegments } from '../layout'
+import { fitLabel, labelRuns, labelSegmentKeys, monthDays, monthSegments } from '../layout'
 
 const REF = { referenceDate: '2026-09-01' }
 
@@ -31,9 +31,9 @@ describe('month layout', () => {
 })
 
 describe('labels', () => {
-  it('labelRun prefers the longest non-PTO run', () => {
-    expect(labelRun([{ pto: false }, { pto: false }, { pto: true }, { pto: true }, { pto: true }])).toEqual([0, 2])
-    expect(labelRun([{ pto: true }, { pto: true }])).toEqual([0, 2])
+  it('labelRuns returns the longest non-PTO and PTO runs', () => {
+    expect(labelRuns([{ pto: false }, { pto: false }, { pto: true }, { pto: true }, { pto: true }])).toEqual({ main: [0, 2], pto: [2, 3] })
+    expect(labelRuns([{ pto: true }, { pto: true }])).toEqual({ main: [0, 0], pto: [0, 2] })
   })
   it('fitLabel picks the longest that fits', () => {
     expect(fitLabel(['シルバーウィーク 5連休', '5連休'], 200)).toBe('シルバーウィーク 5連休')

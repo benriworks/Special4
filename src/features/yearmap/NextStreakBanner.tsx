@@ -1,5 +1,5 @@
 import { diffDays, streakLabel, type ISODate, type Streak } from '../../core/holidays'
-import { formatRangeShort, formatShort, relativeDaysJa, toWareki } from '../../core/jpdate'
+import { formatRangeShort, formatShort, listDatesShort, relativeDaysJa, toWareki } from '../../core/jpdate'
 
 interface Props {
   year: number
@@ -51,14 +51,12 @@ export function NextStreakBanner({ year, today, streaks, onOpen, onChangeYear }:
   }
 
   const wareki = toWareki(streak.start)
-  const ptoText = streak.ptoDays.length
-    ? `有休 ${streak.ptoDays.map((d) => formatShort(d, false)).join('・')} の${streak.ptoDays.length}日で`
-    : '有休なしで'
+  const ptoText = streak.ptoDays.length ? `有休 ${listDatesShort(streak.ptoDays)}（${streak.ptoDays.length}日）` : '有休なし'
 
   return (
     <aside className="card card--lg banner" aria-label={title} data-testid="next-streak">
       <p className="banner__title">{title}</p>
-      <h3 className="banner__range">{formatRangeShort(streak.start, streak.end)}</h3>
+      <p className="banner__range">{formatRangeShort(streak.start, streak.end)}</p>
       <div className="banner__meta">
         <span className="banner__count">{streakLabel(streak)}</span>
         {relative && <span>{relative}</span>}

@@ -47,7 +47,7 @@ export function YearMap({ year, pto, mode, settings, today, onChangePto, onChang
 
   return (
     <>
-      <section className="hero container" aria-label="有休ブースト">
+      <section className="hero container" aria-labelledby="hero-heading">
         <PtoHero year={year} pto={pto} mode={mode} plan={plan} notBeforeApplies={notBeforeApplies} onChangePto={onChangePto} onChangeMode={onChangeMode} />
         <NextStreakBanner year={year} today={today} streaks={plan.streaks} onOpen={(s) => setSelection({ kind: 'streak', streak: s })} onChangeYear={onChangeYear} />
       </section>
@@ -70,6 +70,7 @@ export function YearMap({ year, pto, mode, settings, today, onChangePto, onChang
           labelKeys={labelKeys}
           holidays={holidays}
           today={today}
+          satOff={settings.weekend === 'sat-sun'}
           focusDate={focusDate}
           onFocusDate={setFocusDate}
           onKeyDown={onKeyDown}

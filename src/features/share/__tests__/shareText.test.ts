@@ -16,15 +16,15 @@ const silverWeek: Streak = {
 describe('shareText', () => {
   it('formats a named, PTO-boosted streak in three lines', () => {
     expect(shareText({ year: 2026, streak: silverWeek, appUrl: URL })).toBe(
-      `【2026年】9/19(土)〜9/27(日) 9連休（シルバーウィーク）\n有休 9/24(木)・9/25(金) の2日で\n日付のミカタ ${URL}`,
+      `【2026年】9/19(土)〜9/27(日) 9連休（シルバーウィーク）\n有休 9/24(木)・9/25(金)（2日）\n日付のミカタ ${URL}`,
     )
   })
 
-  it('says 有休なしで when there is no PTO', () => {
+  it('says 有休なし when there is no PTO', () => {
     const s: Streak = { ...silverWeek, end: '2026-09-23', length: 5, ptoDays: [], boosted: false }
     const lines = shareText({ year: 2026, streak: s, appUrl: URL }).split('\n')
     expect(lines[0]).toBe('【2026年】9/19(土)〜9/23(水) 5連休（シルバーウィーク）')
-    expect(lines[1]).toBe('有休なしで')
+    expect(lines[1]).toBe('有休なし')
   })
 
   it('omits the parenthesis when the streak has no name', () => {
@@ -45,7 +45,7 @@ describe('shareText', () => {
     }
     const text = shareText({ year: 2026, streak: s, appUrl: URL })
     expect(text.split('\n')).toHaveLength(3)
-    expect(text).toContain('の6日で')
+    expect(text).toContain('（6日）')
     expect(text.endsWith(URL)).toBe(true)
   })
 

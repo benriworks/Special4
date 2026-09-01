@@ -113,7 +113,7 @@ export function ShareActions(props: ShareActionsProps): ReactElement {
             href={card.url}
             download={fileName}
             onClick={() => {
-              toast.show('画像を保存しました')
+              toast.show('画像のダウンロードを開始しました')
               onDone?.()
             }}
           >

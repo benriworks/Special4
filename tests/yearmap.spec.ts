@@ -79,6 +79,29 @@ test.describe('連休マップ', () => {
     await expect(sheet).toContainText('令和8年9月22日')
   })
 
+  test('day sheet → streak link hands over to the streak sheet', async ({ page }) => {
+    await page.goto('/Special4/#y=2026&pto=0&mode=longest&wk=sat-sun')
+    await page.locator('#day-2026-05-04').click()
+    await expect(page.getByTestId('day-sheet')).toBeVisible()
+    await page.getByTestId('day-sheet').getByRole('button', { name: /GW 5連休を見る/ }).click()
+    await expect(page.getByTestId('streak-sheet')).toBeVisible()
+    await expect(page.getByTestId('day-sheet')).toBeHidden()
+    await expect(page.getByTestId('streak-sheet')).toContainText('GW 5連休')
+    // focus stays inside the open dialog
+    const inDialog = await page.evaluate(() => document.activeElement?.closest('dialog[open]') !== null)
+    expect(inDialog).toBe(true)
+  })
+
+  test('ribbon labels survive a year change', async ({ page }) => {
+    await page.goto('/Special4/#y=2027&pto=0&mode=longest&wk=sat-sun')
+    const fresh = await page.locator('.ribbon__label').allTextContents()
+    await page.goto('/Special4/#y=2026&pto=0&mode=longest&wk=sat-sun')
+    await page.getByTestId('year-select').selectOption('2027') // arrows are hidden below 480px
+    await expect(page.locator('#map-heading')).toHaveText('2027年の連休マップ')
+    await expect.poll(() => page.locator('.ribbon__label').allTextContents()).toEqual(fresh)
+    expect(fresh.length).toBeGreaterThanOrEqual(5)
+  })
+
   test('theme toggle switches data-theme and persists', async ({ page }) => {
     await page.emulateMedia({ colorScheme: 'light' })
     await page.goto('/Special4/')

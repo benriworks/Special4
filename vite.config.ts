@@ -11,7 +11,6 @@ export default defineConfig({
     VitePWA({
       registerType: 'prompt',
       injectRegister: false, // registered from src/app/pwa/UpdateToast.tsx
-      includeAssets: ['favicon.svg', 'icons/apple-touch-icon.png', 'og.png'],
       manifest: {
         name: '日付のミカタ',
         short_name: '日付のミカタ',

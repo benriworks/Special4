@@ -1,7 +1,7 @@
 // Detailed screenshots for visual review / README: hero with PTO, each tools tab, the streak sheet and the generated share card.
 // Usage: node scripts/screenshots-detail.mjs [outDir]
 import { spawn } from 'node:child_process'
-import { mkdirSync } from 'node:fs'
+import { existsSync, mkdirSync } from 'node:fs'
 import { chromium } from '@playwright/test'
 const out = process.argv[2] ?? 'shots'; mkdirSync(out, { recursive: true })
 const PORT = 4175, BASE = `http://127.0.0.1:${PORT}/Special4/`
@@ -9,7 +9,8 @@ const server = spawn('npx', ['vite', 'preview', '--host', '127.0.0.1', '--port',
 const wait = async () => { for (let i = 0; i < 100; i++) { try { if ((await fetch(BASE)).ok) return } catch {} await new Promise(r => setTimeout(r, 200)) } throw new Error('no server') }
 try {
   await wait()
-  const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium' })
+  const executablePath = existsSync('/opt/pw-browsers/chromium') ? '/opt/pw-browsers/chromium' : undefined
+  const browser = await chromium.launch({ executablePath })
   for (const [vp, w, h] of [['desktop', 1280, 900], ['mobile', 375, 812]]) {
     for (const scheme of ['light', 'dark']) {
       const ctx = await browser.newContext({ viewport: { width: w, height: h }, colorScheme: scheme, locale: 'ja-JP', reducedMotion: 'reduce' })

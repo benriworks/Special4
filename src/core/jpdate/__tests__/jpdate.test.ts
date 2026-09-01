@@ -54,10 +54,10 @@ describe('age & eto', () => {
     expect(ageOn('1990-08-31', '2026-09-01')).toMatchObject({ full: 36, nextBirthday: '2027-08-31' })
     expect(ageOn('2027-01-01', '2026-09-01')).toBeNull()
   })
-  it('Feb 29 birthdays age up on Mar 1 in common years', () => {
+  it('Feb 29 birthdays age up on Mar 1 in common years, but the birthday itself is only a real Feb 29', () => {
     expect(ageOn('2000-02-29', '2026-02-28')?.full).toBe(25)
-    expect(ageOn('2000-02-29', '2026-03-01')?.full).toBe(26)
-    expect(ageOn('2000-02-29', '2028-02-29')?.full).toBe(28)
+    expect(ageOn('2000-02-29', '2026-03-01')).toMatchObject({ full: 26, isBirthday: false, nextBirthday: '2028-02-29' })
+    expect(ageOn('2000-02-29', '2028-02-29')).toMatchObject({ full: 28, isBirthday: true, daysToNextBirthday: 0 })
   })
   it('eto', () => {
     expect(eto(2026)).toBe('丙午')

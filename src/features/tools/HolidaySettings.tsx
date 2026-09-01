@@ -43,7 +43,7 @@ export function HolidaySettings({ settings, onChangeSettings, today }: Props) {
   const validation = validateRangeForm({ label, fromMonth, fromDay, toMonth, toDay, existing: settings.customRanges })
   const errorFor = (field: RangeFormField): string | null => {
     if (validation.ok || validation.field !== field) return null
-    if (field === 'label' && !attempted) return null
+    if ((field === 'label' || field === 'range') && !attempted) return null
     return validation.message
   }
   const rangeError = errorFor('range')

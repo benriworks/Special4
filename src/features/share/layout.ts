@@ -79,16 +79,18 @@ export function fitText(text: string, maxWidth: number, measure: (s: string) => 
   return chars.slice(0, lo).join('').trimEnd() + ellipsis
 }
 
-/** 「有休 9/24(木)・9/25(金) の2日で」 / 「有休 9/24・9/25 の2日で」 / 「有休なしで」 */
+/** 「有休 9/24(木)・9/25(金)（2日）」 / 「有休 9/24・9/25（2日）」 / 「有休なし」 */
 export function ptoLine(ptoDays: readonly ISODate[], withWeekday: boolean): string {
-  if (ptoDays.length === 0) return '有休なしで'
-  const list = ptoDays.map((d) => formatShort(d, withWeekday)).join('・')
-  return `有休 ${list} の${ptoDays.length}日で`
+  if (ptoDays.length === 0) return '有休なし'
+  const shown = ptoDays.length > 5 ? ptoDays.slice(0, 4) : ptoDays
+  const rest = ptoDays.length - shown.length
+  const list = shown.map((d) => formatShort(d, withWeekday)).join('・') + (rest > 0 ? ` ほか${rest}日` : '')
+  return `有休 ${list}（${ptoDays.length}日）`
 }
 
-/** Compact form for narrow spaces: 「有休 2日で」 / 「有休なしで」 */
+/** Compact form for narrow spaces: 「有休 2日」 / 「有休なし」 */
 export function ptoLineShort(count: number): string {
-  return count === 0 ? '有休なしで' : `有休 ${count}日で`
+  return count === 0 ? '有休なし' : `有休 ${count}日`
 }
 
 /** 「9連休（シルバーウィーク）」 / 「3連休」 */

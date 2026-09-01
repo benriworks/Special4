@@ -1,5 +1,5 @@
 import { type CSSProperties } from 'react'
-import { formatRangeShort, formatShort } from '../../core/jpdate'
+import { formatRangeShort, listDatesShort } from '../../core/jpdate'
 import { PTO_MAX, type PtoMode, type PtoPlan } from '../../core/pto'
 import { Segmented } from '../../ui/Segmented'
 import { RollingNumber } from './RollingNumber'
@@ -31,19 +31,14 @@ function Stat({ label, value, unit, delta, testId }: { label: string; value: num
       <div className="stat__label">
         <span>{label}</span>
         {delta > 0 && (
-          <span className="stat__delta" aria-label={`有休で${delta}増加`}>
-            +{delta}
+          <span className="stat__delta">
+            <span aria-hidden="true">+{delta}</span>
+            <span className="visually-hidden">（有休で{delta}増加）</span>
           </span>
         )}
       </div>
     </div>
   )
-}
-
-function listDates(days: string[]): string {
-  const shown = days.length > 5 ? days.slice(0, 4) : days
-  const rest = days.length - shown.length
-  return shown.map((d) => formatShort(d, false)).join('・') + (rest > 0 ? ` ほか${rest}日` : '')
 }
 
 export function PtoHero({ year, pto, mode, plan, notBeforeApplies, onChangePto, onChangeMode }: Props) {
@@ -73,7 +68,7 @@ export function PtoHero({ year, pto, mode, plan, notBeforeApplies, onChangePto, 
   } else {
     summaryText = (
       <>
-        有休<strong>{ptoDays.length}日</strong>（{listDates(ptoDays)}）を使うと、休みは<strong>{summary.totalOff}日</strong>、
+        有休<strong>{ptoDays.length}日</strong>（{listDatesShort(ptoDays)}）を使うと、休みは<strong>{summary.totalOff}日</strong>、
         {longest && (
           <>
             最長の連休は
@@ -90,7 +85,9 @@ export function PtoHero({ year, pto, mode, plan, notBeforeApplies, onChangePto, 
 
   return (
     <div className="hero__main">
-      <p className="hero__lead">有休1日で、連休はもっと伸びる。</p>
+      <h2 className="hero__lead" id="hero-heading">
+        有休1日で、連休はもっと伸びる。
+      </h2>
       <div className="hero__stats">
         <Stat label="休み" value={summary.totalOff} unit="日" delta={summary.totalOff - baseline.totalOff} testId="stat-total" />
         <Stat label="3連休以上" value={summary.streak3plus} unit="回" delta={summary.streak3plus - baseline.streak3plus} testId="stat-streaks" />
@@ -125,8 +122,8 @@ export function PtoHero({ year, pto, mode, plan, notBeforeApplies, onChangePto, 
       <p className="hero__summary" aria-live="polite" data-testid="hero-summary">
         {summaryText}
       </p>
-      {pto > ptoDays.length && ptoDays.length >= 0 && notBeforeApplies && (
-        <p className="hero__note caption">今年の残りの平日に置けるのは{ptoDays.length}日でした。</p>
+      {pto > ptoDays.length && notBeforeApplies && (
+        <p className="hero__note caption">今年の残りの平日に置けるのは{ptoDays.length}日までです。</p>
       )}
       {notBeforeApplies && pto > 0 && ptoDays.length > 0 && <p className="hero__note caption">有休は今日以降の平日に配置しています。</p>}
     </div>

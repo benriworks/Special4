@@ -34,11 +34,21 @@ export interface AgeInfo {
   etoAnimal: string
 }
 
-/** Birthday observed in a given year (Feb 29 → Mar 1 in non-leap years, matching how age legally increments). */
-function birthdayIn(year: number, birth: ISODate): ISODate {
+/** Day the age legally increments in a given year (Feb 29 → Mar 1 in common years). */
+function ageUpDayIn(year: number, birth: ISODate): ISODate {
   const { m, d } = parseISO(birth)
   if (m === 2 && d === 29 && !isLeapYear(year)) return isoOf(year, 3, 1)
   return isoOf(year, m, d)
+}
+
+/** Next actual occurrence of the birth month/day on or after `on` (Feb 29 → next leap year). */
+function nextBirthdayFrom(birth: ISODate, on: ISODate): ISODate {
+  const { m, d } = parseISO(birth)
+  for (let y = parseISO(on).y; ; y++) {
+    if (m === 2 && d === 29 && !isLeapYear(y)) continue
+    const candidate = isoOf(y, m, d)
+    if (candidate >= on) return candidate
+  }
 }
 
 export function ageOn(birth: ISODate, on: ISODate): AgeInfo | null {
@@ -46,10 +56,9 @@ export function ageOn(birth: ISODate, on: ISODate): AgeInfo | null {
   const by = parseISO(birth).y
   const oy = parseISO(on).y
   let full = oy - by
-  if (monthDay(on) < monthDay(birthdayIn(oy, birth))) full--
-  const isBirthday = monthDay(on) === monthDay(birthdayIn(oy, birth))
-  let next = birthdayIn(oy, birth)
-  if (next < on) next = birthdayIn(oy + 1, birth)
+  if (monthDay(on) < monthDay(ageUpDayIn(oy, birth))) full--
+  const isBirthday = monthDay(on) === monthDay(birth)
+  const next = nextBirthdayFrom(birth, on)
   return {
     full,
     kazoe: oy - by + 1,

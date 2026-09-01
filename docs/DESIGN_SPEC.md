@@ -110,7 +110,7 @@
 | Caption（注記・凡例） | 13px | 400 | 1.6 |
 | Button | 15px | 700 | 1 |
 | Day number（カレンダー日付） | 13px（SP 14px） | 400 / 今日・祝日は 700 | 1 |
-| Ribbon label | 12px | 700 | 1 / letter-spacing 0.02em |
+| Ribbon label | 12px | 700 | 1 / letter-spacing 0.02em（朱の区間に収まらないときは山吹の区間に墨文字で置く） |
 
 - 行長: 本文は最大 40 文字（max-width 40em 相当）
 - 数値は `font-variant-numeric: tabular-nums` を必須とする（ロール時にガタつかない）
@@ -122,10 +122,10 @@
 - **Text Button**: 用途=年切替 ‹ › 、注記のリンク / 下線なし、hover で下線 / 最小タップ 44×44
 - **Icon Button（テーマ切替）**: 44×44、枠線 1px Border、radius 8px
 - **Slider（有休）**: input[type=range] 0–10 step 1 / トラック高さ 6px 色=Border、進捗部分=山吹 / つまみ 28px 円（山吹、墨1pxボーダー）、タップ領域 44px / 値ラベル「有休 3日」を右側に 700
-- **Segmented control（モード・週休）**: 高さ 40px、枠線 1px Border、radius 8px、選択=墨ベタ＋白文字、非選択=透明＋Text
+- **Segmented control（モード・週休）**: 高さ 44px（内側の選択肢 38px＋padding 3px）、枠線 1px Border、radius 8px、選択=墨ベタ＋白文字、非選択=透明＋Text
 - **MonthCard**: Surface 背景、1px Border、radius 12px、padding 12px / 見出し「1月」「January」は左揃え / 曜日ヘッダー 13px Muted（日曜は朱、土曜は藍）
-- **DayCell**: 正方形、role=gridcell、数字中央 / 祝日・日曜=朱 / 土曜（週休時）=藍 / 平日=Text / 前後月の余白は空 / 今日=墨の円ベタ塗り＋白数字 / 有休提案日=山吹の角丸背景（radius 6px）＋墨数字＋斜線 / 独自休業日=数字下に 10×2px の朱バー / 祝日=数字下に 4px ドット（朱） / 表示年が今年のとき、過去の日は opacity .55（今日・有休提案日は除く）
-- **Ribbon**: grid の行に重ねる帯（高さ 18px、radius 4px）。朱ベタ＋白文字 12px 700。有休継ぎ足し部分は山吹ベタ＋墨文字＋repeating-linear-gradient の斜線（墨 12%）＋1px 墨系ボーダー。週をまたぐ帯は行ごとに分割、名前は最長セグメントのみに表示。button 要素、aria-label「9月19日から9月23日まで 5連休」
+- **DayCell**: 正方形、role=gridcell（role=row で週ごとに包む）、数字中央 / 祝日=朱 / 日曜=朱（週休設定に関わらず暦の慣習として） / 土曜（週休=土日のとき）=藍 / 平日=Text / 前後月の余白は空 / 今日=墨の円ベタ塗り＋白数字 / 有休提案日=山吹の角丸背景（radius 6px）＋墨数字＋斜線 / 独自休業日=数字下に 10×2px の朱バー / 祝日=数字下に 4px ドット（朱） / 表示年が今年のとき、過去の日は opacity .55（今日・有休提案日は除く）
+- **Ribbon**: grid の行に重ねる帯（高さ 18px、Mobile では 24px、radius 4px）。朱ベタ＋白文字 12px 700。有休継ぎ足し部分は山吹ベタ＋墨文字＋repeating-linear-gradient の斜線（墨 12%）＋1px 墨系ボーダー。週をまたぐ帯は行ごとに分割、名前は最長セグメントのみに表示。button 要素、aria-label「9月19日から9月23日まで 5連休」
 - **NextStreakBanner**: Surface、1px Border、radius 12px、padding 20px。1行目 Caption「次の連休」、2行目 H3 期間、3行目 Body「あと18日 ・ 有休なしで5連休」
 - **Sheet（連休詳細）**: `<dialog>` 要素。PC=中央モーダル 480px、SP=下からのボトムシート。radius 16px、影 0 12px 32px rgba(27,31,42,.18)。閉じるボタン 44×44 右上
 - **Tabs（ツール）**: role=tablist、下線 2px で選択表示（墨）、文字 15px 700。パネル padding 24px（SP 16px）
