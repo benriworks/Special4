@@ -25,8 +25,10 @@
 ## GitHub Pages で公開する
 
 1. リポジトリの **Settings → Pages → Build and deployment → Source** を **GitHub Actions** にする（初回のみ）。
-2. このブランチを `main` にマージする（または Actions タブから「Deploy to GitHub Pages」を手動実行する）。
-3. 数十秒後に https://benriworks.github.io/Special4/ で公開されます。
+2. `main` にプッシュ（マージ）する。または Actions タブの「Deploy to GitHub Pages」を **Run workflow** で手動実行する。
+3. 1分ほどで https://benriworks.github.io/Special4/ で公開されます。
+
+> **画面が真っ白になるとき**: Source が「**Deploy from a branch**」のままです。その設定では GitHub 標準の「pages build and deployment」が `main` のソース（ビルド前の `index.html`）をそのまま配信し、こちらのワークフローの結果を上書きしてしまいます。Source を「GitHub Actions」に切り替えると標準ビルドは止まり、以後は `dist/` だけが配信されます。切り替え前でも「Deploy to GitHub Pages」を手動実行すれば、次に `main` へプッシュするまでは正しく表示されます。
 
 ワークフローは [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml)。`npm ci && npm run build` の成果物 `dist/` を `actions/deploy-pages` で配信します。Vite の `base` は `/Special4/` に固定してあります（リポジトリ名を変えたら `vite.config.ts` の `BASE` と、`index.html` の `og:url` / `og:image` も変更してください）。
 
