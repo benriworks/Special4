@@ -78,6 +78,7 @@ npm run build && npm run preview
 npm run fonts:subset   # UI文字列を変えたら再実行（要 python3 + pip install fonttools brotli）
 node scripts/gen-icons.mjs        # アイコン・OG画像
 node scripts/screenshots.mjs      # 全体スクリーンショット
+node scripts/check-unbuilt-fallback.mjs <url>   # ビルド前のソースが配信されたときの案内表示を確認
 ```
 
 ## 注記
